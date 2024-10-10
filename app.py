@@ -564,7 +564,7 @@ def merchant_dashboard():
 
 
 ###################
-# Admin Products
+# Merchant Products
 ###################
 @app.route('/merchant/products')
 @merchant_required
@@ -672,7 +672,7 @@ def merchant_delete_product(product_id):
 
 
 ###################
-# Admin Orders
+# Merchant Orders
 ###################
 @app.route('/merchant/orders')
 @merchant_required
@@ -693,7 +693,8 @@ def merchant_orders():
 def view_merchant_order(order_id):
     try:
         merchant_id = session['user_id']
-        response = requests.get(f'{ORDERS_API_URL}/cms/merchant/orders/{merchant_id}/{order_id}')
+        # response = requests.get(f'{ORDERS_API_URL}/cms/merchant/orders/{merchant_id}/{order_id}')
+        response = requests.get(f'{ORDERS_API_URL}/cms/merchant/order/{order_id}')
         
         if response.status_code == 200:
             order = response.json()
@@ -711,12 +712,15 @@ def view_merchant_order(order_id):
 @merchant_required
 def delete_merchant_order(order_id):
     # Send DELETE request to API Gateway to delete the order
-    response = requests.delete(f'{ORDERS_API_URL}/{order_id}?merchant_id={session["user_id"]}')
+    # response = requests.delete(f'{ORDERS_API_URL}/cms/merchant/order/{order_id}')
+    merchant_id = session['user_id']
+    response = requests.delete(f'{ORDERS_API_URL}/cms/merchant/orders/{merchant_id}/{order_id}')
     if response.status_code == 200:
         flash('Order deleted successfully.', 'success')
     else:
         flash('Failed to delete order.', 'danger')
     return redirect(url_for('merchant_orders'))
+
 
 
 

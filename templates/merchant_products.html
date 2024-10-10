@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Your Products</h2>
+    <h2>Products</h2>
 
     <!-- Flash messages for errors or success -->
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -26,11 +26,14 @@
     <table class="table table-striped mt-3">
         <thead>
             <tr>
-                <th style="width: 15%;">Image</th>
+                <th style="width: 10%;">Image</th>
+                <th style="width: 10%;">Merchant Name</th>
                 <th style="width: 10%;">Product ID</th>
-                <th style="width: 20%;">Product Name</th>
-                <th style="width: 30%;">Description</th>
-                <th style="width: 10%;">Price</th>
+                <th style="width: 15%;">Product Name</th>
+                <th style="width: 25%;">Description</th>
+                
+                <th style="width: 5%;">Price</th>
+                <th style="width: 10%;">Registered Date</th>
                 <th style="width: 15%;">Actions</th>
             </tr>
         </thead>
@@ -38,6 +41,7 @@
             {% for product in products %}
             <tr>
                 <td><img src="{{ product.ImageUrl }}" alt="{{ product.ProductName }}" width="100"></td>
+                <td>{{ product.MerchantName }}</td>
                 <td>{{ product.ProductID }}</td>
                 <td>{{ product.ProductName }}</td>
                 <td>
@@ -48,7 +52,9 @@
                         {{ product.Description }}
                     {% endif %}
                 </td>
+                
                 <td>${{ product.Price }}</td>
+                <td>{{ product.RegisteredDate }}</td>
                 <td>
                     <!-- Edit button -->
                     <a href="{{ url_for('merchant_edit_product', product_id=product.ProductID) }}" class="btn btn-warning btn-sm">Edit</a>
