@@ -27,11 +27,11 @@
                     <th style="width: 10%;">Customer</th>
                     <th style="width: 12%;">Shipping Address</th>
                     <th style="width: 6%;">Merchant Name</th>
-                    <th style="width: 6%;">Product ID</th>
+                    <!-- <th style="width: 6%;">Product ID</th> -->
                     <th style="width: 18%;">Items</th>
                     <th style="width: 8%;" class="text-right">Total Price</th>
                     <th style="width: 7%;">Image</th>
-                    <th style="width: 13%;">Actions</th>
+                    <th style="width: 15%;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +44,7 @@
                             <td rowspan="{{ order.CartItems|length }}">{{ order.CartItems[0].UserName }}</td>
                             <td rowspan="{{ order.CartItems|length }}">{{ order.ShippingAddress }}</td>
                             <td>{{ order.CartItems[0].MerchantName }}</td>
-                            <td>{{ order.CartItems[0].ProductID }}</td>
+                            <!-- <td>{{ order.CartItems[0].ProductID }}</td> -->
                             <td>
                                 {{ order.CartItems[0].ProductName }} (x{{ order.CartItems[0].Quantity }}) - ${{ order.CartItems[0].Price }}
                             </td>
@@ -66,7 +66,7 @@
                     {% for item in order.CartItems[1:] %}
                     <tr>
                         <td>{{ item.MerchantName }}</td>
-                        <td>{{ item.ProductID }}</td>
+                        <!-- <td>{{ item.ProductID }}</td> -->
                         <td>{{ item.ProductName }} (x{{ item.Quantity }}) - ${{ item.Price }}</td>
                         <td><img src="{{ item.ImageUrl }}" alt="{{ item.ProductName }}" class="img-fluid" width="70"></td>
                     </tr>
