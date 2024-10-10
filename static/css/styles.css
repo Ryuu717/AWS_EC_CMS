@@ -1,0 +1,41 @@
+/* Make the sidebar full height */
+.sidebar {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    background-color: #343a40;
+    color: white;
+}
+
+.sidebar .nav-link {
+    color: #ddd;
+}
+
+.sidebar .nav-link.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #495057;
+    color: white;
+}
+
+.content-area {
+    margin-left: 250px; 
+    padding: 20px;
+}
+
+.navbar-top {
+    width: calc(100% - 250px); 
+    margin-left: 250px;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 56px; 
+}

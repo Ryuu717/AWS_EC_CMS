@@ -1,0 +1,149 @@
+{% extends "admin_header.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Welcome Message -->
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="h3">Dashboard</h1>
+        </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="row">
+        <!-- Total Orders -->
+        <div class="col-md-3 mb-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Orders</h5>
+                    <p class="card-text">{{ total_orders }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Total Revenue -->
+        <div class="col-md-3 mb-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Revenue</h5>
+                    <p class="card-text">${{ "%.2f"|format(total_revenue) }}</p>
+                </div>
+            </div>
+        </div>
+        <!-- Total Products -->
+        <div class="col-md-3 mb-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Products</h5>
+                    <p class="card-text">{{ total_products }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Users -->
+        <div class="col-md-3 mb-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <p class="card-text">{{ total_users }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Chart Section -->
+    <div class="row">
+        <!-- Orders Chart -->
+        <div class="col-md-12 mb-4">
+            <div id="ordersChart" style="height: 400px;"></div>
+        </div>
+
+        <!-- Sales by Merchants -->
+        <div class="col-md-6 mb-4">
+            <div id="salesByMerchantsChart" style="height: 400px;"></div>
+        </div>
+
+        <!-- Orders by Status -->
+        <div class="col-md-6 mb-4">
+            <div id="ordersByStatusChart" style="height: 400px;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Orders by Date Chart -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawAllCharts);
+
+    function drawAllCharts() {
+        drawOrdersChart();
+        drawSalesByMerchantsChart();
+        drawOrdersByStatusChart();
+    }
+
+    function drawOrdersChart() {
+        console.log('Drawing Orders Chart...');
+        var data = google.visualization.arrayToDataTable([
+            ['Order Date', 'Total Revenue'],
+            {% for date, total in order_summary %}
+            ['{{ date }}', {{ total }}],
+            {% endfor %}
+        ]);
+
+        var options = {
+            title: 'Total Revenue by date',
+            titleTextStyle: { fontSize: 20 },
+            hAxis: { title: 'Order Date' },
+            vAxis: { title: 'Total Revenue' },
+            legend: 'none'
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('ordersChart'));
+        chart.draw(data, options);
+    }
+
+    function drawSalesByMerchantsChart() {
+        console.log('Drawing Sales by Merchants Chart...');
+        var data = google.visualization.arrayToDataTable([
+            ['Merchant', 'Total Sales'],
+            {% for merchant, sales in sales_by_merchant %}
+            ['{{ merchant }}', {{ sales }}],
+            {% endfor %}
+        ]);
+
+        var options = {
+            title: 'Sales by Merchants',
+            titleTextStyle: { fontSize: 20 },
+            hAxis: { title: 'Merchant' },
+            vAxis: { title: 'Total Sales' },
+            legend: 'none'
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById('salesByMerchantsChart'));
+        chart.draw(data, options);
+    }
+
+    function drawOrdersByStatusChart() {
+        console.log('Drawing Orders by Status Chart...');
+        var data = google.visualization.arrayToDataTable([
+            ['Status', 'Orders'],
+            {% for status, count in orders_by_status %}
+            ['{{ status }}', {{ count }}],
+            {% endfor %}
+        ]);
+
+        var options = {
+            title: 'Orders by Status',
+            titleTextStyle: { fontSize: 20 },
+            pieHole: 0.4
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('ordersByStatusChart'));
+        chart.draw(data, options);
+    }
+</script>
+
+{% endblock %}
