@@ -23,5 +23,5 @@ instance/
 # Ignore venv
 venv/
 
-# Ignore text files
-*.txt
+# Lambda functions
+LambdaFunction.txt
